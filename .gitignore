@@ -1,0 +1,35 @@
+# Ambientes Virtuais Python (NUNCA subir para o GitHub)
+.venv/
+venv/
+env/
+ENV/
+
+# Caches e Bytecodes compilados do Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Variáveis de Ambiente e Chaves Secretas Locais
+.env
+.env.*
+!.env.example
+
+# Dados gerados localmente durante testes e emissões
+data/*.png
+data/*.zip
+data/*.json
+
+# Arquivos de Sistema Operacional (macOS / Windows / Linux)
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+Thumbs.db
+
+# Pastas de IDEs e Deploy Local
+.vscode/
+.idea/
+.vercel/

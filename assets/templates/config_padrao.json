@@ -1,0 +1,52 @@
+{
+  "nome_template": "Certificado Acadêmico Institucional UNIMAM (1920x1080 - Full HD)",
+  "imagem_fundo": "assets/templates/fundo_padrao.png",
+  "molduras_disponiveis": {
+    "padrao": "assets/templates/fundo_padrao.png",
+    "moderno": "assets/templates/fundo_moderno.png",
+    "solene": "assets/templates/fundo_solene.png"
+  },
+  "dimensoes": {
+    "largura": 1920,
+    "altura": 1080
+  },
+  "largura_maxima_texto": 1440,
+  "campos": {
+    "nome_aluno": {
+      "x": 960,
+      "y": 465,
+      "tamanho_fonte": 56,
+      "cor_hex": "#0F3D24",
+      "alinhamento_ancora": "mm",
+      "negrito": true,
+      "max_linhas": 1
+    },
+    "texto_evento": {
+      "x": 960,
+      "y": 595,
+      "tamanho_fonte": 29,
+      "cor_hex": "#2D3748",
+      "alinhamento_ancora": "mm",
+      "negrito": false,
+      "max_linhas": 3
+    },
+    "data_emissao": {
+      "x": 960,
+      "y": 695,
+      "tamanho_fonte": 24,
+      "cor_hex": "#4A5568",
+      "alinhamento_ancora": "mm",
+      "negrito": false,
+      "max_linhas": 1
+    },
+    "codigo_autenticidade": {
+      "x": 960,
+      "y": 952,
+      "tamanho_fonte": 19,
+      "cor_hex": "#2D3748",
+      "alinhamento_ancora": "mm",
+      "negrito": false,
+      "max_linhas": 1
+    }
+  }
+}

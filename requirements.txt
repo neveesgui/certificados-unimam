@@ -1,0 +1,14 @@
+# Pillow: Biblioteca principal para manipulação de imagens (abrir template, escrever textos e colar QR Code)
+Pillow>=11.0.0
+
+# qrcode[pil]: Gera matrizes de QR Code e usa o Pillow para transformá-las em imagem PNG
+qrcode>=7.4.2
+
+# FastAPI: Framework web moderno, rápido e assíncrono para criar as rotas de emissão e validação
+fastapi>=0.115.0
+
+# Uvicorn: Servidor ASGI leve para rodar o FastAPI localmente durante o desenvolvimento
+uvicorn>=0.30.6
+
+# python-multipart: Necessário no FastAPI para receber formulários HTML (Form) e upload de arquivos (.csv, .png)
+python-multipart>=0.0.12
