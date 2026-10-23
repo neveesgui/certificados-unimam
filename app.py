@@ -92,6 +92,12 @@ async def pagina_inicial() -> HTMLResponse:
     return HTMLResponse((PASTA_HTML / "index.html").read_text(encoding="utf-8"))
 
 
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon() -> FileResponse:
+    """Entrega o ícone do pássaro da UNIMAM na aba do navegador."""
+    return FileResponse(BASE_DIR / "static" / "favicon.png", media_type="image/png")
+
+
 @app.get("/validar", response_class=HTMLResponse)
 async def pagina_validacao() -> HTMLResponse:
     """Página pública de verificação da Chave de Autenticidade."""
