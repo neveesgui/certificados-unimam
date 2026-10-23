@@ -22,7 +22,7 @@
         </div>
       </a>
       <div class="nav-links">
-        <a href="/" class="nav-pill" style="text-decoration:none">← Voltar ao Portal</a>
+        <a href="https://unimam.com.br" target="_blank" rel="noopener noreferrer" class="nav-pill">Portal UNIMAM ↗</a>
       </div>
     </div>
   </nav>
@@ -64,11 +64,77 @@
       return div;
     }
 
+    function renderizarFormularioStateless(codigoInicial, mensagemAviso) {
+      cartao.innerHTML = '';
+      const box = el('div');
+      const titulo = el('h2', 'Verificação Criptográfica SHA-256');
+      titulo.className = 'card-title';
+      titulo.style.marginBottom = '6px';
+
+      const sub = el('p', mensagemAviso || 'Confirme os dados impressos no certificado para validar a assinatura matemática:');
+      sub.style.color = 'var(--text-2)';
+      sub.style.fontSize = '14px';
+      sub.style.marginBottom = '18px';
+
+      const form = el('form');
+      form.innerHTML = `
+        <div class="fields">
+          <div class="field">
+            <input id="v-codigo" placeholder=" " required />
+            <label for="v-codigo">Chave de Autenticidade</label>
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <input id="v-nome" placeholder=" " required />
+              <label for="v-nome">Nome do Aluno (como no certificado)</label>
+            </div>
+            <div class="field">
+              <input id="v-evento" placeholder=" " required />
+              <label for="v-evento">Nome do Evento</label>
+            </div>
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <input id="v-horas" type="number" min="1" placeholder=" " required />
+              <label for="v-horas">Carga Horária (h)</label>
+            </div>
+            <div class="field">
+              <input id="v-data" placeholder=" " required />
+              <label for="v-data">Data de Emissão (DD/MM/AAAA)</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-footer">
+          <a href="/" class="btn ghost">Voltar</a>
+          <button type="submit" class="btn">Validar Assinatura SHA-256</button>
+        </div>
+      `;
+      form.querySelector('#v-codigo').value = codigoInicial || '';
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        parametros.set('codigo', form.querySelector('#v-codigo').value.trim().toUpperCase());
+        parametros.set('nome', form.querySelector('#v-nome').value.trim());
+        parametros.set('evento', form.querySelector('#v-evento').value.trim());
+        parametros.set('carga_horaria', form.querySelector('#v-horas').value.trim());
+        parametros.set('data_emissao', form.querySelector('#v-data').value.trim());
+        validar();
+      });
+
+      box.append(titulo, sub, form);
+      cartao.append(box);
+    }
+
     async function validar() {
       const resposta = await fetch(`/api/validar?${parametros.toString()}`);
       const r = await resposta.json();
-      cartao.innerHTML = '';
 
+      if (r.requer_dados_stateless) {
+        renderizarFormularioStateless(r.codigo_consultado || parametros.get('codigo'), r.mensagem);
+        return;
+      }
+
+      cartao.innerHTML = '';
       const verdict = el('div', undefined, 'verdict');
 
       if (r.valido) {

@@ -59,9 +59,20 @@ def executar_testes() -> None:
             print(f"   -> Certificado demo salvo em: {caminho_demo}")
             print(f"   -> Chave de Autenticidade gerada: {meta['codigo_autenticidade']}")
 
-    print("4. Testando Validação de Autenticidade por Chave Única...")
+    print("4. Testando Validação de Autenticidade (Cache/KV e Verificação Matemática Stateless SHA-256)...")
     res_key = validar_certificado(codigo=meta["codigo_autenticidade"])
     assert res_key["valido"] is True
+
+    # Testa validação 100% Stateless (simulando servidor Vercel que reiniciou sem banco de dados!)
+    res_stateless = validar_certificado(
+        codigo=meta["codigo_autenticidade"],
+        token=None,
+        nome="Lais Cardoso De Medeiros",
+        evento="Tech Girls no mercado de trabalho",
+        carga_horaria="8",
+        data_emissao="22/10/2026",
+    )
+    assert res_stateless["valido"] is True, "Falha na validação matemática Stateless!"
 
     print("5. Testando Sistema Antifraude...")
     pacote_original = json.loads(base64.urlsafe_b64decode(meta["token_validacao"]).decode("utf-8"))

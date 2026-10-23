@@ -204,9 +204,20 @@ async def rota_emitir_lote(
 async def rota_api_validar(
     codigo: Optional[str] = Query(None, description="Chave curta impressa no certificado (ex: CERT-...)"),
     token: Optional[str] = Query(None, description="Token assinado opcional"),
+    nome: Optional[str] = Query(None, description="Nome impresso no certificado (para validação Stateless)"),
+    evento: Optional[str] = Query(None, description="Evento impresso no certificado"),
+    carga_horaria: Optional[str] = Query(None, description="Horas impressas no certificado"),
+    data_emissao: Optional[str] = Query(None, description="Data impressa no certificado (DD/MM/AAAA)"),
 ) -> JSONResponse:
-    """Verifica a autenticidade via Chave de Autenticidade."""
-    resultado = validar_certificado(codigo=codigo, token=token)
+    """Verifica a autenticidade via Chave de Autenticidade (Banco KV, Cache ou Cálculo Stateless SHA-256)."""
+    resultado = validar_certificado(
+        codigo=codigo,
+        token=token,
+        nome=nome,
+        evento=evento,
+        carga_horaria=carga_horaria,
+        data_emissao=data_emissao,
+    )
     return JSONResponse(content=resultado, status_code=200 if resultado["valido"] else 404)
 
 
