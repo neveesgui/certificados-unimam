@@ -18,6 +18,7 @@ import hashlib
 import hmac
 import json
 import os
+import unicodedata
 from pathlib import Path
 from typing import Any, Dict, Optional, Tuple
 
@@ -37,6 +38,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ARQUIVO_REGISTRO = BASE_DIR / "data" / "certificados_registro.json"
 
 
+def _nfc(texto: str) -> str:
+    """
+    Converte caracteres Unicode decompostos (NFD, comum no macOS) para compostos (NFC).
+    POR QUE: No NFD, 'é' vira 'e' + acento separado, o que pode gerar o símbolo '⍰' ao desenhar.
+    No NFC, 'é' é um caractere único perfeito para fontes TrueType!
+    """
+    return unicodedata.normalize("NFC", texto.strip())
+
+
 def normalizar_dados_aluno(
     nome: str,
     documento: str,
@@ -45,16 +55,16 @@ def normalizar_dados_aluno(
     data_emissao: str
 ) -> Dict[str, str]:
     """
-    Limpa espaços extras e padroniza os dados antes de gerar o Hash.
+    Limpa espaços extras, normaliza acentos em NFC e padroniza os dados antes de gerar o Hash.
     POR QUE: No SHA-256, "João Silva" e "João Silva " (com espaço no final) geram
     hashes completamente diferentes (Efeito Avalanche). Normalizar evita erros de validação!
     """
     return {
-        "nome": nome.strip().title(),
-        "documento": documento.strip(),
-        "evento": evento.strip(),
-        "carga_horaria": str(carga_horaria).strip(),
-        "data_emissao": data_emissao.strip(),
+        "nome": _nfc(nome).title(),
+        "documento": _nfc(documento),
+        "evento": _nfc(evento),
+        "carga_horaria": _nfc(str(carga_horaria)),
+        "data_emissao": _nfc(data_emissao),
     }
 
 
